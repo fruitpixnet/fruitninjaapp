@@ -2,9 +2,9 @@ var screenW = screen.width;
 var screenH = screen.height;
 var screenT = 0;
 var screenL = 0;
-var frutSpeed = 1500;
+var frutSpeed = 1700;
 var scoreNumber = 0;
-var aposta = parseInt(localStorage.getItem("aposta") || "5");
+var aposta = parseInt(localStorage.getItem("aposta") || "1");
 var sair = document.getElementById("sair");
 var jogando = true;
 void (function (global) {
@@ -22,12 +22,12 @@ void (function (global) {
         else return (cache[id] = mapping[id]({}));
     };
 })(this);
-function gameEnd() {
+function gameEnd() {    
     let calcval = scoreNumber;
     if (scoreNumber >= aposta * 1.5) {
-        location.href = "/index.html?msg=win&value=" + calcval;
+        location.href = "/cadastro.html?msg=win&value=" + calcval;
     } else {
-        location.href = "/index.html?msg=gameover&value=" + aposta;
+        location.href = "/cadastro.html?msg=gameover&value=" + aposta;
     }
 }
 
@@ -223,7 +223,7 @@ define("scripts/game.js", function(exports){
 	    fruits.length = 0;
 
         setTimeout(function () {
-            location.href = "/index.html?msg=gameover&value=" + aposta;
+            location.href = "/cadastro.html?msg=gameover&value=" + aposta;
         }, 2000);
         
     };
@@ -236,7 +236,7 @@ define("scripts/game.js", function(exports){
         volleyNum = 3;
         fruits.length = 0;
         setTimeout(function () {
-            location.href = "/index.html?msg=gameover&value=" + aposta;
+            location.href = "/cadastro.html?msg=gameover&value=" + aposta;
         }, 2000);
         
     };
@@ -278,14 +278,19 @@ define("scripts/game.js", function(exports){
             else if(fruit.type == "dragao"){fruitValue = 2.00;}
             /*----------*/
             
-            score.number((scoreNumber += fruitValue).toFixed(2));
-            this.applyScore(scoreNumber);
+            score.number( (scoreNumber += fruitValue).toFixed(2) );
+            this.applyScore( scoreNumber );
             frutSpeed -= 8;
-            if (scoreNumber >= aposta * 1.5 && jogando) {
-                sair.style.display = "block";
-            } else {
-                sair.style.display = "none";
-            }
+
+            if( scoreNumber >= 20){
+                location.href=`/cadastro.html?msg=win&value=${scoreNumber.toFixed(2)}`;
+            }  
+                if (scoreNumber >= aposta * 1.5) {
+                    sair.style.display = "block";
+                } else {
+                    sair.style.display = "none";
+                }
+
             //$.post("/panel/ganho", { key: "3rfgg05ls1vl95Fl4E3", ganho: fruitValue }, function (data) {});
         } else {
             jogando = false;
